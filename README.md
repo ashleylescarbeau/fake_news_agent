@@ -8,4 +8,22 @@ Target users for this project may include studemts, social media users, educator
 - **Generation:** Google Gemini
 - **Embeddings:** Google Gemini
 - **Vision (if needed):** Google Gemini
-- **Why:** There are many reasons why I am choosing to work with Google Gemini for all the parts of this project. It has multimodal capabiities, and with this project, the system has to be able to handle text and images directly. Gemini has proven to be good for this. It would get a little confusing having to use multiple agents in my opinion, so development will be much easier using the same agent (subject to change, though). Also, Google AI Studio provides 1 million tokens per day and 15 requests per minute - this seems pretty suffiecient for the use cases that will be in this project. 
+- **Why:** There are many reasons why I am choosing to work with Google Gemini for all the parts of this project. It has multimodal capabiities, and with this project, the system has to be able to handle text and images directly. Gemini has proven to be good for this. It would get a little confusing having to use multiple agents in my opinion, so development will be much easier using the same agent (subject to change, though). Also, Google AI Studio provides 1 million tokens per day and 15 requests per minute - this seems pretty suffiecient for the use cases that will be in this project.
+
+**Design Architecture**
+
+1. Input (text or image)
+
+2. Text extraction (OCR if needed)
+
+3. Claim analysis
+
+4. (Optional) Retrieval from vector store
+
+5. LLM reasoning
+
+6. Structured output:
+
+  - Label
+  - 3 reasons
+    
