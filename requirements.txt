@@ -3,3 +3,6 @@ langchain-google-genai
 chromadb
 python-dotenv
 langchain_community
+langchain.prompts
+langchain.schema
+langchain.vectorstores
