@@ -35,6 +35,8 @@ class FakeNewsAgent:
 
         self.use_retrieval = use_retrieval
         self.retriever = None
+        self.memory = []
+        self.source_trust = {}
 
         # Optional Retrieval Setup
         if self.use_retrieval:
@@ -117,8 +119,6 @@ Respond in this format:
 
         chain = self.prompt | self.llm | self.parser
 
-# Remove markdown code fences if present
-
 
         response = chain.invoke(
             {
@@ -143,3 +143,29 @@ Respond in this format:
                 "label": "Error",
                 "reasons": ["Model returned invalid JSON", response, ""],
             }
+        
+    def update_state(self, source, predicted, truth, tool_ok):
+
+        if source not in self.source_trust:
+            self.source_trust[source] = 0.5
+
+        old_trust = self.source_trust[source]
+
+        if not tool_ok:
+            self.memory.append({"error": True})
+            return
+
+        if predicted == truth:
+            new_trust = min(1.0, old_trust + 0.1)
+        else:
+            new_trust = max(0.0, old_trust - 0.1)
+
+        self.source_trust[source] = new_trust
+
+        self.memory.append({
+            "source": source,
+            "predicted": predicted,
+            "truth": truth,
+            "old_trust": old_trust,
+            "new_trust": new_trust
+        })

@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "title": "Scientists confirm coffee cures all cancer",
+    "source": "unknownblog.com",
+    "article": "BREAKING: Scientists confirm that drinking coffee cures all forms of cancer. Researchers say pharmaceutical companies tried to hide this discovery.",
+    "label": "Fake"
+  },
+  {
+    "id": 2,
+    "title": "Central bank holds rates steady amid cooling inflation",
+    "source": "reuters",
+    "article": "Reuters reports the central bank signaled it may hold interest rates steady as inflation shows signs of cooling.",
+    "label": "Real"
+  }
+]

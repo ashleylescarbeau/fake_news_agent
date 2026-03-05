@@ -1,0 +1,72 @@
+
+In the first tool call, the agent is using a small dataset I made using JSON. 
+It has two different articles, one fake and one real, that are just made up.
+The json has a few components, including title, source, article, and label, the label being real or fake.
+The tool call is a function that retrieves one of the two json examples using the ID that I also assigned to each article.
+This will make the agent request information from the dataset, rather than having it directly embedded into the logic.
+
+The loop iterates through the states in the assignment. 
+The initial state is printed to begin, which is a source_trust dict.
+It starts off with an empty set, then when a tool is called, the script prints the source of the article.
+After it recieves the article, the agent will retrieve data from my chroma db that has some articles stored already.
+THis demonstrates its ability to interact with externally stored dtata.
+From here, the agent will send out th predicted label, either real, fake, or unable to determine.
+Following this prediction, the afent will compare the predicted label with the actual label of real or fake.
+This allows the agent to trust/distrust certain sources internally.
+This is updated using reinforcement style feedback.
+When a prediction is accurate, it will increase the trust by 0.1, or decrease by 0.1 when it is incorrect.
+The updates can be seen between iterations (paasted the output below)
+You can see, for example, both times the agent predicted correctly, so in both instances, the trust increased by 0.1.
+The agent also has a record of the outcome in the memory list. 
+This stores the source, the prediction, the truth label, and the amount the trust changed. 
+
+
+agent_loop.py output:
+==============================
+ITERATION 1
+==============================
+Current internal state: {}
+Tool returned article from: unknownblog.com
+
+--- RETRIEVED DOCUMENTS ---
+Single vaccine could protect against all coughs, colds and flus, researchers say
+
+A Stanford University team have tested their nasal spray vaccine in animals but still need to do human clinical trials
+-----
+Inside Peaky Blinders film premiere hailed a 'global phenomenon'
+
+The world premiere of Peaky Blinders: The Immortal Man took place in Birmingham to wild acclaim.
+-----
+Oil and gas prices rise on new Iran threat to Gulf shipping
+
+Iranian official threatens to "set fire" to any ships passing through the crucial Strait of Hormuz.
+-----
+Agent prediction: Fake
+Ground truth: Fake
+Updated state: {'unknownblog.com': 0.6}
+Memory entry: {'source': 'unknownblog.com', 'predicted': 'Fake', 'truth': 'Fake', 'old_trust': 0.5, 'new_trust': 0.6}
+
+==============================
+ITERATION 2
+==============================
+Current internal state: {'unknownblog.com': 0.6}
+Tool returned article from: reuters
+
+--- RETRIEVED DOCUMENTS ---
+Jacinda Ardern's move to Australia renews spotlight on New Zealand's brain drain problem
+
+New Zealand has long struggled to keep its best and brightest with about 180 Kiwis leaving a day.
+-----
+Oil and gas prices rise on new Iran threat to Gulf shipping
+
+Iranian official threatens to "set fire" to any ships passing through the crucial Strait of Hormuz.
+-----
+US-Israel war with Iran: OpenAI changes deal with US after backlash
+
+Chief Executive Sam Altman said the group would prohibit the use of its systems to spy on Americans.
+-----
+Agent prediction: Real
+Ground truth: Real
+Updated state: {'unknownblog.com': 0.6, 'reuters': 0.6}
+Memory entry: {'source': 'reuters', 'predicted': 'Real', 'truth': 'Real', 'old_trust': 0.5, 'new_trust': 0.6}
+(.venv) @ashleylescarbeau ➜ /workspaces/fake_news_agent (main) $ 
